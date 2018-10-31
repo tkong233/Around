@@ -1,6 +1,7 @@
 import { Form, Input, Button, message } from 'antd';
 import React from 'react';
 import { API_ROOT } from '../constants';
+import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -27,6 +28,7 @@ class RegistrationForm extends React.Component {
                     throw new Error(response.statusText);
                 }).then(() => {
                     message.success('Registration Succeed');
+                    this.props.history.push('/login');
                 }).catch((e) => {
                     message.error('Registration Failed');
                     console.log(e);
@@ -129,6 +131,7 @@ class RegistrationForm extends React.Component {
 
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Register</Button>
+                    <p>I already have an account, go back to <Link to="/login">Login</Link></p>
                 </FormItem>
             </Form>
         );
