@@ -1,10 +1,9 @@
-import { Form, Input, Button, message } from 'antd';
 import React from 'react';
+import { Form, Input, Button, message } from 'antd';
 import { API_ROOT } from '../constants';
 import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
-
 class RegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
@@ -20,29 +19,31 @@ class RegistrationForm extends React.Component {
                     body: JSON.stringify({
                         username: values.username,
                         password: values.password,
-                    }),
+                    })
                 }).then((response) => {
                     if (response.ok) {
                         return response;
                     }
                     throw new Error(response.statusText);
-                }).then(() => {
-                    message.success('Registration Succeed');
-                    this.props.history.push('/login');
-                }).catch((e) => {
-                    message.error('Registration Failed');
-                    console.log(e);
                 })
+                    .then((response) => response.text())
+                    .then((response) => {
+                        console.log(response);
+                        message.success('Registration Succeed');
+                        this.props.history.push('/login');
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                        message.error('Registration Failed');
+                    });
             }
         });
     }
-
 
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     }
-
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
@@ -59,7 +60,6 @@ class RegistrationForm extends React.Component {
         }
         callback();
     }
-
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -86,16 +86,14 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-
         return (
-            <Form onSubmit={this.handleSubmit} className='register'>
-
+            <Form onSubmit={this.handleSubmit} className="register">
                 <FormItem
                     {...formItemLayout}
-                    label= "username"
+                    label="Username"
                 >
                     {getFieldDecorator('username', {
-                        rules: [{ required: true, message: 'Please input your username!', whitespace: true }],
+                        rules: [{ required: true, message: 'Please input your username!', whitespace: false }],
                     })(
                         <Input />
                     )}
@@ -128,10 +126,9 @@ class RegistrationForm extends React.Component {
                         <Input type="password" onBlur={this.handleConfirmBlur} />
                     )}
                 </FormItem>
-
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Register</Button>
-                    <p>I already have an account, go back to <Link to="/login">Login</Link></p>
+                    <p>I already have an account, go back to <Link to="/Login">login</Link></p>
                 </FormItem>
             </Form>
         );
