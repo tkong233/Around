@@ -2,6 +2,7 @@
 @import '~antd/dist/antd.css';
 @import 'styles/Main.css';
 @import 'styles/Registration.css';
+@import 'styles/Login.css';
 
 body {
   margin: 0;
